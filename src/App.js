@@ -1,10 +1,17 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   let [count1, setCount] = useState(0);
   let [count2, setCount2] = useState(0);
+  const [data, setData] = useState(undefined);
+
+  useEffect(() => {
+    fetch("https://api.github.com/users/s1320174")
+      .then((res) => res.json())
+      .then((json) => setData(json));
+  }, []);
   return (
     <div className="App">
       <header className="App-header bg-pastel-blue">
@@ -43,6 +50,18 @@ function App() {
         >
           👎{count2}
         </button>
+        {data ? (
+          <>
+            <img
+              className="w-32 rounded-full mt-10"
+              alt="icon"
+              src={data.avatar_url}
+            />
+            <p className="text-wed-dark">{data.login}</p>
+          </>
+        ) : (
+          <p>no data</p>
+        )}
       </header>
     </div>
   );
